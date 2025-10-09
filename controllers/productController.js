@@ -45,7 +45,7 @@ export function createProduct(req,res){
 
 export async function getAllProducts(req,res){ //get all products available
 
-    try{   
+    try{   //implement async functions to use await funcion to get all products
 
     if(isAdmin(req)){
     // if(isAdmin(req)){ //if isAdmin request is true
