@@ -43,29 +43,35 @@ export function createProduct(req,res){
 }
 
 
-export function getAllProducts(req,res){ //get all products available
+export async function getAllProducts(req,res){ //get all products available
 
-    if(isAdmin(req)){ //if isAdmin request is true
+    try{   
 
-        Product.find() .then( //all products should be taken from DB
+    if(isAdmin(req)){
+    // if(isAdmin(req)){ //if isAdmin request is true
 
-            (products)=>{
-                res.json(products) //all products should be shown as a response which are available
-            })
+    //     Product.find() .then( //all products should be taken from DB
+
+    //         (products)=>{
+    //             res.json(products) //all products should be shown as a response which are available
+    //         })
         
-        .catch((error) => {
+    //     .catch((error) => {
 
-            res.status(500).json({ //unathorized access for user if req is not sent by admin
-            message:"Error fetching products", //error msg should be shown as response
-            error:error.message
-             });
+    //         res.status(500).json({ //unathorized access for user if req is not sent by admin
+    //         message:"Error fetching products", //error msg should be shown as response
+    //         error:error.message
+    //          });
 
-            });
+    //         });
+
+    const products = await Product.find()
+
     }else{
 
          Product.find({isAvailable : true}) .then(
 
-            (products)=>{
+            (products)=>{ //products are taken from const
                 res.json(products) //if it is not admin, sending the request then only available products should be shown to user/logged in or not
             }
         
@@ -78,11 +84,16 @@ export function getAllProducts(req,res){ //get all products available
              });
 
 
-        }
-
-        );
+        });
 
 }
+
+    }catch(error){
+        res.status(500).json({
+            message:"Error fetching products",
+            error:error,
+        });
+    }
 }
 
 
