@@ -11,9 +11,12 @@ import userRouter from "./routes/userRouter.js"
 import jwt from "jsonwebtoken"
 import productRouter from "./routes/productRouter.js"
 
-const app = express() //variable that declares the whole backend furnished by express from this function
+import cors from "cors"
+import dotenv from "dotenv"
 
-const MongoURI = "mongodb+srv://admin:123@cluster0.lpzi9u3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+dotenv.config()
+
+const MongoURI = process.env.MONGO_URL
 
 //This is the key of the MongoDB database cluster as a URL to connect our project with the database
 
@@ -24,6 +27,10 @@ mongoose.connect(MongoURI).then(
     
 ) //connects MongoDB cluster with our project and it would take some time, then is used to show that if the connection happens then this
   //comment should be printed
+
+  const app = express() //variable that declares the whole backend furnished by express from this function
+
+  app.use(cors())
 
 // function abc(){
 
@@ -123,7 +130,7 @@ app.use( //irrespective of type of a request,this blue function would run
 
             // console.log(token)
 
-            jwt.verify(token,"secretkey96$2025", //used to decrypt the authorization header by providing token and secret key 
+            jwt.verify(token,process.env.JWT_SECRET, //used to decrypt the authorization header by providing token and secret key 
 
             (error,content)=>{ //error in token and content inside the token should be shown if there is an error in decryption
 
@@ -168,8 +175,8 @@ app.use( //irrespective of type of a request,this blue function would run
 
 )//      
     // app.use("/students", studentRouter) //used to plug the router to the main connection running which is the localhost:5000
-    app.use("/users", userRouter)
-    app.use("/products",productRouter)
+    app.use("/api/users", userRouter)
+    app.use("/api/products",productRouter)
     
 
 app.listen(5000,()=>{

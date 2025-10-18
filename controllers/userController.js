@@ -78,7 +78,7 @@ export function createUser(req,res){
 
                   };
 
-                  const token = jwt.sign(payload,"secretkey96$2025",{expiresIn:"150hrs"}) //we put the user content from payload and add a unique secret key to generate a token and expiration time of token
+                  const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"150hrs"}) //we put the user content from payload and add a unique secret key to generate a token and expiration time of token
 
                   //the secret key is like a signature that cannot be read and only the payload/content after decryption from token can be read
                      res.json({
@@ -87,9 +87,10 @@ export function createUser(req,res){
 
                        message:"Login Successful", //in the future, a token would be provided to each customer
 
-                       token:token, //separate token is generated as an identity if login is successful to the user with all user information/content
+                       token:token,
+                        //separate token is generated as an identity if login is successful to the user with all user information/content
 
-                       
+                       role:user.role,
 
                      });
 

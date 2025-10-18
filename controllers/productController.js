@@ -58,7 +58,7 @@ export async function getAllProducts(req,res){ //get all products available
         
     //     .catch((error) => {
 
-    //         res.status(500).json({ //unathorized access for user if req is not sent by admin
+    //         res.status(500).json({ //response msg showing database error 
     //         message:"Error fetching products", //error msg should be shown as response
     //         error:error.message
     //          });
@@ -69,7 +69,7 @@ export async function getAllProducts(req,res){ //get all products available
 
     }else{
 
-         Product.find({isAvailable : true}) .then(
+         Product.find({isAvailable : true}) .then( //only available products should be shown when user sends request 
 
             (products)=>{ //products are taken from const
                 res.json(products) //if it is not admin, sending the request then only available products should be shown to user/logged in or not
@@ -78,7 +78,7 @@ export async function getAllProducts(req,res){ //get all products available
         )   
         .catch((error) => {
 
-            res.status(500).json({ //unathorized access for user if 
+            res.status(500).json({ //response msg showing database error when fetching products
             message:"Error fetching products",
             error:error.message
              });
@@ -90,7 +90,7 @@ export async function getAllProducts(req,res){ //get all products available
 
     }catch(error){
         res.status(500).json({
-            message:"Error fetching products",
+            message:"Error fetching products",//when any other form of error occurs,a resposne msg is also shown
             error:error,
         });
     }
